@@ -40,12 +40,31 @@ abstract class Platform<T> extends SpriteGroupComponent<T>
 
     await add(hitbox);
 
-    // More on Platforms: Set isMoving
+    final int rand = Random().nextInt(100); // Add this line
+    if (rand > 80) isMoving = true;
   }
 
-  // More on Platforms: Add _move method
+  void _move(double dt) {
+    if (!isMoving) return;
 
-  // More on Platforms: Override update method
+    final double gameWidth = gameRef.size.x;
+
+    if (position.x <= 0) {
+      direction = 1;
+    } else if (position.x >= gameWidth - size.x) {
+      direction = -1;
+    }
+
+    _velocity.x = direction * speed;
+
+    position += _velocity * dt;
+  }
+
+  @override
+  void update(double dt) {
+    _move(dt);
+    super.update(dt);
+  }
 }
 
 // Add platforms: Add NormalPlatformState Enum
